@@ -1,3 +1,3 @@
-# Slides
+# Presentations
 
-All slides / presentations are around around improving Ruby on Rails huge (legacy) applications, but not only.
+All presentations are around around improving Ruby on Rails huge (legacy) applications, but not only.
