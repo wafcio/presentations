@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Hotwire</title>
+    <meta charset="utf-8">
+    <style>
+      @import url(https://fonts.googleapis.com/css?family=Poppins);
+      @import url(https://fonts.googleapis.com/css?family=Ubuntu+Mono:400,700,400italic);
+
+      body {
+        font-family: 'Poppins';
+      }
+      h1, h2, h3 {
+        font-family: 'Poppins';
+        font-weight: 400;
+        margin-bottom: 0;
+      }
+      .remark-slide-content h1 { font-size: 3em; }
+      .remark-slide-content h2 { font-size: 2em; }
+      .remark-slide-content h3 { font-size: 1.6em; }
+      .footnote {
+        position: absolute;
+        bottom: 3em;
+      }
+      li p { line-height: 1.25em; }
+      a, a > code {
+        color: #9aa146;
+        text-decoration: none;
+      }
+      code {
+        background: #e7e8e2;
+        border-radius: 5px;
+      }
+      .remark-code, .remark-inline-code { font-family: 'Ubuntu Mono'; }
+      .remark-code-line-highlighted     { background-color: #373832; }
+      .pull-left {
+        float: left;
+        width: 47%;
+      }
+      .pull-right {
+        float: right;
+        width: 47%;
+      }
+      .pull-right ~ p {
+        clear: both;
+      }
+      .avatar > img {
+        max-height: 250px;
+        border-radius: 25%;
+      }
+      #slideshow .slide .content code {
+        font-size: 0.8em;
+      }
+      #slideshow .slide .content pre code {
+        font-size: 0.9em;
+        padding: 15px;
+      }
+      .inverse {
+        background: #272822;
+        color: #777872;
+        text-shadow: 0 0 20px #333;
+      }
+      .inverse h1, .inverse h2 {
+        color: #f3f3f3;
+        line-height: 0.8em;
+      }
+
+      /* Slide-specific styling */
+      #slide-inverse .footnote {
+        bottom: 12px;
+        left: 20px;
+      }
+      #slide-how .slides {
+        font-size: 0.9em;
+        position: absolute;
+        top:  151px;
+        right: 140px;
+      }
+      #slide-how .slides h3 {
+        margin-top: 0.2em;
+      }
+      #slide-how .slides .first, #slide-how .slides .second {
+        padding: 1px 20px;
+        height: 90px;
+        width: 120px;
+        -moz-box-shadow: 0 0 10px #777;
+        -webkit-box-shadow: 0 0 10px #777;
+        box-shadow: 0 0 10px #777;
+      }
+      #slide-how .slides .first {
+        background: #fff;
+        position: absolute;
+        top: 20%;
+        left: 20%;
+        z-index: 1;
+      }
+      #slide-how .slides .second {
+        position: relative;
+        background: #fff;
+        z-index: 0;
+      }
+
+      /* Two-column layout */
+      .left-column {
+        color: #777;
+        width: 20%;
+        height: 92%;
+        float: left;
+      }
+      .left-column h2:last-of-type, .left-column h3:last-child {
+        color: #000;
+      }
+      .right-column {
+        width: 75%;
+        float: right;
+        padding-top: 1em;
+      }
+
+      img[src*="#hero"] {
+        height: 400px;
+      }
+
+      img[src*="#slide-image"] {
+        height: 400px;
+      }
+
+      img[src*="#screen"] {
+        width: 80%;
+      }
+    </style>
+  </head>
+  <body>
+    <textarea id="source">
+
+class: center, middle
+
+# Hotwire
+
+## Why we don't need React.JS anymore
+
+---
+
+# Who am I?
+
+.pull-left.avatar[![Picture of me](https://avatars.githubusercontent.com/u/945115?v=4)]
+
+- Chris Wawer
+
+- Ruby on Rails Developer
+
+- Improving legacy applications
+
+- https://wawer.it
+
+---
+
+# Johnny
+
+<center>
+  <img src="images/hero.jpeg#hero" alt="Hero" title="Hero">
+</center>
+
+---
+
+# Server Side Rendering
+
+![Server Side Rendering](images/www-old.jpeg#slide-image "Server Side Rendering")
+
+---
+
+# Turbolinks
+
+![Turbolinks](images/www-turbolinks.jpeg#slide-image "Turbolinks")
+
+---
+
+# AJAX Helpers
+
+![AJAX Helpers](images/www-ajax.jpeg#slide-image "AJAX Helpers")
+
+---
+
+# Single Page Application
+
+![SPA + API](images/www-spa.jpeg#slide-image "SPA + API")
+
+---
+
+# JS Components
+
+![JS Components](images/www-js-components.jpeg#slide-image "JS Components")
+
+---
+
+# Hotwire
+
+![Hotwire](images/hotwire.jpeg#screen "Hotwire")
+
+Source: https://pragmaticstudio.com/hotwire-rails
+
+---
+
+# New Way
+
+<br>
+
+<center>
+  <img src="images/new-way.jpeg" alt="New Way" title="New Way">
+</center>
+---
+
+# Hotwire - Turbo Drive
+
+- Turbolinks
+
+  - AJAX GET
+
+- Turbo Drive
+
+  - AJAX GET
+
+  - AJAX POST
+
+---
+
+# Hotwire - Turbo Frames
+
+Turbolinks only for component like JS component
+
+```html
+<%= turbo_frame_tag message do %>
+  <h1>My message title</h1>
+  <p>My message content</p>
+  <%= link_to "Edit this message", message_path(message) %>
+<% end %>
+```
+
+HTML:
+
+```html
+<turbo-frame id="message_1">
+  <h1>My message title</h1>
+  <p>My message content</p>
+  <a href="/messages/1/edit">Edit this message</a>
+</turbo-frame>
+```
+
+---
+
+# Hotwire - Turbo Frames
+
+## Response
+
+```ruby
+<%= turbo_frame_tag message do %>
+  <%= form_for message do |f| %>
+    <%= f.text_field :name %>
+    <%= f.text_area :content %>
+    <%= f.submit %>
+  <% end %>
+<% end %>
+```
+
+---
+
+# Hotwire - Turbo Frames
+
+![Turbo Frames](images/turbo-frame.gif#screen "Turbo Frames")
+
+Source: https://www.bearer.com/blog/how-to-build-modals-with-hotwire-turbo-frames-stimulusjs
+
+---
+
+# Hotwire - Turbo Streams
+
+Dynamically update multiple parts of the page
+
+```html
+<!-- app/views/messages/_message.html.erb -->
+<div id="message_1">
+  <%= message.content %>
+</div>
+```
+
+```html
+<!-- app/views/messages/update.turbo_stream.erb -->
+<%= turbo_stream.replace "message_#{@message.id}",
+                         partial: "messages/message",
+                         locals: { message: @message } %>
+```
+
+Multiple browser sessions
+
+- ActionCable
+
+- HTML over WebSockets
+
+
+---
+
+# Hotwire - Turbo Streams
+
+## Trace changes
+
+```ruby
+# app/models/quote.rb
+
+class Quote < ApplicationRecord
+  # All the previous code
+
+  after_create_commit -> {
+    broadcast_prepend_to "quotes",
+    partial: "quotes/quote",
+    locals: { quote: self },
+    target: "quotes"
+  }
+end
+```
+
+
+```ruby
+<%# app/views/quotes/index.html.erb %>
+
+<%= turbo_stream_from "quotes" %>
+```
+
+---
+
+# Hotwire - Turbo Streams
+
+## Trace changes
+
+```ruby
+<turbo-stream action="prepend" target="quotes">
+  <template>
+    <turbo-frame id="quote_123">
+      <!-- The HTML for the quote partial -->
+    </turbo-frame>
+  </template>
+</turbo-stream>
+```
+
+---
+
+# Hotwire - Turbo Streams
+
+![Turbo Streams](images/todo-demo.gif#screen "Turbo Streams")
+
+Source: https://www.bearer.com/blog/how-to-build-modals-with-hotwire-turbo-frames-stimulusjs
+
+---
+
+# Animation?
+
+- Stimulus
+
+```html
+<div data-controller="hello">
+  <input data-hello-target="name" type="text">
+  <button data-action="click->hello#greet">Greet</button>
+  <span data-hello-target="output">
+  </span>
+</div>
+```
+
+```javascript
+// hello_controller.js
+import { Controller } from "stimulus"
+
+export default class extends Controller {
+  static targets = [ "name", "output" ]
+
+  greet() {
+    this.outputTarget.textContent =
+      `Hello, ${this.nameTarget.value}!`
+  }
+}
+```
+
+---
+
+class: center, middle
+
+# Demo project
+
+[Link Here]
+
+---
+
+class: center, middle
+
+# Questions ???
+
+    </textarea>
+    <script src="https://remarkjs.com/downloads/remark-latest.min.js">
+    </script>
+    <script>
+      var slideshow = remark.create();
+    </script>
+  </body>
+</html>
