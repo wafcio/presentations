@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>The Doctrine of Useful Objects - Get rid of mocking</title>
+    <meta charset="utf-8">
+    <style>
+      @import url(https://fonts.googleapis.com/css?family=Poppins);
+      @import url(https://fonts.googleapis.com/css?family=Ubuntu+Mono:400,700,400italic);
+
+      body {
+        font-family: 'Poppins';
+      }
+      h1, h2, h3 {
+        font-family: 'Poppins';
+        font-weight: 400;
+        margin-bottom: 0;
+      }
+      .remark-slide-content h1 { font-size: 3em; }
+      .remark-slide-content h2 { font-size: 2em; }
+      .remark-slide-content h3 { font-size: 1.6em; }
+      .footnote {
+        position: absolute;
+        bottom: 3em;
+      }
+      li p { line-height: 1.25em; }
+      a, a > code {
+        color: #9aa146;
+        text-decoration: none;
+      }
+      code {
+        background: #e7e8e2;
+        border-radius: 5px;
+      }
+      .remark-code, .remark-inline-code { font-family: 'Ubuntu Mono'; }
+      .remark-code-line-highlighted     { background-color: #373832; }
+      .pull-left {
+        float: left;
+        width: 47%;
+      }
+      .pull-right {
+        float: right;
+        width: 47%;
+      }
+      .pull-right ~ p {
+        clear: both;
+      }
+      .avatar > img {
+        max-height: 250px;
+        border-radius: 25%;
+      }
+      #slideshow .slide .content code {
+        font-size: 0.8em;
+      }
+      #slideshow .slide .content pre code {
+        font-size: 0.9em;
+        padding: 15px;
+      }
+      .inverse {
+        background: #272822;
+        color: #777872;
+        text-shadow: 0 0 20px #333;
+      }
+      .inverse h1, .inverse h2 {
+        color: #f3f3f3;
+        line-height: 0.8em;
+      }
+
+      /* Slide-specific styling */
+      #slide-inverse .footnote {
+        bottom: 12px;
+        left: 20px;
+      }
+      #slide-how .slides {
+        font-size: 0.9em;
+        position: absolute;
+        top:  151px;
+        right: 140px;
+      }
+      #slide-how .slides h3 {
+        margin-top: 0.2em;
+      }
+      #slide-how .slides .first, #slide-how .slides .second {
+        padding: 1px 20px;
+        height: 90px;
+        width: 120px;
+        -moz-box-shadow: 0 0 10px #777;
+        -webkit-box-shadow: 0 0 10px #777;
+        box-shadow: 0 0 10px #777;
+      }
+      #slide-how .slides .first {
+        background: #fff;
+        position: absolute;
+        top: 20%;
+        left: 20%;
+        z-index: 1;
+      }
+      #slide-how .slides .second {
+        position: relative;
+        background: #fff;
+        z-index: 0;
+      }
+
+      /* Two-column layout */
+      .left-column {
+        color: #777;
+        width: 20%;
+        height: 92%;
+        float: left;
+      }
+      .left-column h2:last-of-type, .left-column h3:last-child {
+        color: #000;
+      }
+      .right-column {
+        width: 75%;
+        float: right;
+        padding-top: 1em;
+      }
+
+      img[src*="#hero"] {
+        height: 400px;
+      }
+
+      img[src*="#slide-image"] {
+        height: 400px;
+      }
+
+      img[src*="#screen"] {
+        width: 80%;
+      }
+    </style>
+  </head>
+  <body>
+    <textarea id="source">
+
+class: center, middle
+
+# The Doctrine of<br />Useful Objects
+
+## Get rid of mocking
+
+---
+
+# Who am I?
+
+.pull-left.avatar[![Picture of me](https://avatars.githubusercontent.com/u/945115?v=4)]
+
+- Chris Wawer
+
+- Ruby on Rails Developer
+
+- Improving legacy applications
+
+- https://wawer.it
+
+---
+
+# Service Object
+
+```ruby
+class FindMovie
+  def initialize(title)
+    @title = title
+  end
+
+  def call
+    Tmdb::Movie.find(@title)
+  end
+end
+```
+
+---
+
+class: center, middle
+
+# Unit Testing
+
+---
+
+# External dependencies
+
+Dealing with external dependencies:
+
+```ruby
+# stubbing
+allow(Tmdb::Movie).to receive(:find).with(...)
+
+# mocking
+movie_service = double(:movie_service)
+allow(movie_service).to receive(:find).with(...)
+```
+
+---
+
+class: center, middle
+
+<center>
+  <img src="images/eventide-logo-962x190.png" style="max-width: 90%;" alt="" title="">
+</center>
+
+---
+
+# Usefule Objects
+
+- dependency injection
+- single responsibility
+- ...
+
+---
+
+# Service Object
+
+```ruby
+class FindMovie
+  def initialize(title, movie_service)
+    @title = title
+    @movie_service = movie_service
+  end
+
+  def call
+    @movie_service.call(@title)
+  end
+end
+```
+
+Everything OK?
+
+---
+
+# Incorrect DI
+
+```ruby
+class FindMovie
+  def initialize(title, movie_service)
+    @title = title
+    @movie_service = movie_service
+  end
+
+  def call
+    @movie_service.call(@title)
+  end
+end
+
+FindMovie.new("Ruby on Rails: The Documentary", nil)
+```
+
+---
+
+# Usefule Objects
+
+- dependency injection
+- single responsibility
+- don't allow to intialize object with empty dependency (1st law)
+- ...
+
+---
+
+# Service Object
+
+```ruby
+class FindMovie
+  attr_reader :title
+
+  dependency :movie_service, MovieService
+
+  def self.build(title)
+    new(title).tap do |instance|
+      MovieService.configure(instance)
+    end
+  end
+
+  def initialize(title)
+    @title = title
+  end
+
+  def call
+    movie_service.call(title)
+  end
+end
+```
+
+---
+
+# "Empty instance"
+
+```ruby
+find_movie = FindMovie.new
+find_movie.movie_service # => #<Mimic::Class::MovieService_42:0x...>
+
+find_movie.movie_service.call(title) # => #<Mimic::Void:0x...>
+
+find_movie.movie_service.invoked?(:call)
+```
+
+---
+
+class: center, middle
+
+# Substitutes
+
+---
+
+# Substitutes
+
+```ruby
+class FindMovie
+  dependency :movie_service, MovieService
+end
+
+class MovieService
+  module Substitute
+    def self.build
+      FindMovie.new
+    end
+
+    class FindMovie < ::FindMovie
+      def call
+        # ...
+      end
+
+      def set(result)
+        # ...
+      end
+    end
+  end
+end
+```
+
+---
+
+# Substitutes
+
+```ruby
+class FindMovie
+  dependency :movie_service, MovieService
+end
+
+class MovieService
+  module Substitute
+    def self.build
+      FindMovie.new
+    end
+
+    class FindMovie < ::FindMovie
+      include Mimic::Recorder::Predicate
+
+      record def call
+        # ...
+      end
+
+      def set(result)
+        # ...
+      end
+    end
+  end
+end
+```
+
+---
+
+class: center, middle
+
+# Questions ???
+
+    </textarea>
+    <script src="https://remarkjs.com/downloads/remark-latest.min.js">
+    </script>
+    <script>
+      var slideshow = remark.create();
+    </script>
+  </body>
+</html>
