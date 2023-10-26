@@ -307,12 +307,14 @@ class FindMovie
 end
 
 class MovieService
+  # ...
+
   module Substitute
     def self.build
-      FindMovie.new
+      MovieService.new
     end
 
-    class FindMovie < ::FindMovie
+    class MovieService < ::MovieService
       def call
         # ...
       end
@@ -337,10 +339,10 @@ end
 class MovieService
   module Substitute
     def self.build
-      FindMovie.new
+      MovieService.new
     end
 
-    class FindMovie < ::FindMovie
+    class MovieService < ::MovieService
       include Mimic::Recorder::Predicate
 
       record def call
