@@ -1,0 +1,964 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Integracja Ruby Meetupów</title>
+    <meta charset="utf-8">
+    <style>
+      @import url(https://fonts.googleapis.com/css?family=Poppins);
+      @import url(https://fonts.googleapis.com/css?family=Ubuntu+Mono:400,700,400italic);
+
+      body {
+        font-family: 'Poppins';
+      }
+      h1, h2, h3 {
+        font-family: 'Poppins';
+        font-weight: 400;
+        margin-bottom: 0;
+      }
+      .remark-slide-content h1 { font-size: 3em; }
+      .remark-slide-content h2 { font-size: 2em; }
+      .remark-slide-content h3 { font-size: 1.6em; }
+      .footnote {
+        position: absolute;
+        bottom: 3em;
+      }
+      li p { line-height: 1.25em; }
+      a, a > code {
+        color: #9aa146;
+        text-decoration: none;
+      }
+      code {
+        background: #e7e8e2;
+        border-radius: 5px;
+      }
+      .remark-code, .remark-inline-code { font-family: 'Ubuntu Mono'; }
+      .remark-code-line-highlighted     { background-color: #373832; }
+      .pull-left {
+        float: left;
+        width: 47%;
+      }
+      .pull-right {
+        float: right;
+        width: 47%;
+      }
+      .pull-right ~ p {
+        clear: both;
+      }
+      .avatar > img {
+        max-height: 250px;
+        border-radius: 25%;
+      }
+      #slideshow .slide .content code {
+        font-size: 0.8em;
+      }
+      #slideshow .slide .content pre code {
+        font-size: 0.9em;
+        padding: 15px;
+      }
+      .inverse {
+        background: #272822;
+        color: #777872;
+        text-shadow: 0 0 20px #333;
+      }
+      .inverse h1, .inverse h2 {
+        color: #f3f3f3;
+        line-height: 0.8em;
+      }
+
+      /* Slide-specific styling */
+      #slide-inverse .footnote {
+        bottom: 12px;
+        left: 20px;
+      }
+      #slide-how .slides {
+        font-size: 0.9em;
+        position: absolute;
+        top:  151px;
+        right: 140px;
+      }
+      #slide-how .slides h3 {
+        margin-top: 0.2em;
+      }
+      #slide-how .slides .first, #slide-how .slides .second {
+        padding: 1px 20px;
+        height: 90px;
+        width: 120px;
+        -moz-box-shadow: 0 0 10px #777;
+        -webkit-box-shadow: 0 0 10px #777;
+        box-shadow: 0 0 10px #777;
+      }
+      #slide-how .slides .first {
+        background: #fff;
+        position: absolute;
+        top: 20%;
+        left: 20%;
+        z-index: 1;
+      }
+      #slide-how .slides .second {
+        position: relative;
+        background: #fff;
+        z-index: 0;
+      }
+
+      /* Two-column layout */
+      .left-column {
+        color: #777;
+        width: 20%;
+        height: 92%;
+        float: left;
+      }
+      .left-column h2:last-of-type, .left-column h3:last-child {
+        color: #000;
+      }
+      .right-column {
+        width: 75%;
+        float: right;
+        padding-top: 1em;
+      }
+
+      img[src*="#hero"] {
+        height: 400px;
+      }
+
+      img[src*="#slide-image"] {
+        height: 400px;
+      }
+
+      img[src*="#screen"] {
+        width: 80%;
+      }
+
+      /* graph */
+      svg {
+        width: 90%;
+        height: 600px;
+        border: 1px solid #ddd;
+        background-color: white;
+        margin: 20px auto;
+        display: block;
+      }
+      .link {
+        stroke: #999;
+        stroke-width: 2px;
+        stroke-opacity: 0.6;
+      }
+      .node text {
+        font-family: Arial;
+        font-size: 14px;
+        fill: #333;
+        display: none;
+      }
+      .node-image {
+        width: 100px;
+        height: 100px;
+      }
+    </style>
+  </head>
+  <body>
+    <textarea id="source">
+
+class: center, middle
+
+# Ruby Meetups Integration
+
+### New technology for the community
+
+**Tricity Ruby User Group**
+
+**Chris (Krzysztof) Wawer — 22.05.2025**
+
+---
+
+class: center, middle
+
+<center>
+  <img src="images/rugs-pl.png" alt="" title="" width="80%">
+</center>
+
+---
+
+class: center, middle
+
+<div class="graph-container">
+  <svg id="graph-basic" preserveAspectRatio="xMidYMid meet"></svg>
+</div>
+
+---
+
+class: center, middle
+
+<div class="graph-container">
+  <svg id="graph" preserveAspectRatio="xMidYMid meet"></svg>
+</div>
+
+---
+
+<div class="center">
+  <h1>Advantages of Ruby Meetups Federation</h1>
+</div>
+
+- **Easier access**
+
+<br>
+
+- **Bigger visibility**
+
+<br>
+
+- **Decentralization**
+
+---
+
+class: center, middle
+
+# Technology?
+
+---
+
+class: center, middle
+
+<center>
+  <img src="images/blockchain.jpg" alt="" title="" width="80%">
+</center>
+
+---
+
+class: center, middle
+
+<center>
+  <img src="images/joke.png" alt="" title="" width="80%">
+</center>
+
+---
+
+class: center, middle
+
+<center>
+  <img src="images/activitypub.svg" alt="" title="" width="80%">
+</center>
+
+---
+
+<div class="center">
+  <h1>ActivityPub</h1>
+</div>
+
+- **Easy integration**
+
+<br>
+
+- **Decentralized federation**
+
+<br>
+
+- **Scalability**
+
+<br>
+
+- **Flexibility**
+
+---
+
+<div class="center">
+  <h1>What is ActivityPub?</h1>
+</div>
+
+- W3C Federation Standard (2018)
+
+- Enables communication between independent services
+
+- JSON-LD
+
+- Used in many social media apps:
+
+  - **Mastodon** (microblogging)
+  - **PeerTube** (videos)
+  - **Bookwyrm** (books)
+
+---
+
+# Implementation?
+
+### a) Static Page
+
+### b) Ruby on Rails app
+
+---
+
+# TRUG - File structure
+
+```
+  /
+  │
+  ├── index.html
+  └── archive.html
+```
+
+---
+
+# How does it work?
+
+[.well-known/webfinger]
+
+&nbsp;&nbsp;&nbsp;&nbsp;↳ points to → [Actor]
+
+[Actor]
+
+&nbsp;&nbsp;&nbsp;&nbsp;↳ has → outbox
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;↳ includes → [Create] activity
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;↳ points to → [Event]
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;↳ may includes → [Talks], [Speakers], [Materials]
+
+---
+
+# File structure - webfinger
+
+```
+  /
+  │
+  ├── index.html
+  ├── archive.html
+  │
+  └── .well-known/
+      └── webfinger
+```
+
+---
+
+# webfinger
+
+```json
+# /.well-known/webfinger
+
+{
+  "subject": "acct:trug@trug.pl",
+  "links": [
+    {
+      "rel": "self",
+      "type": "application/activity+json",
+      "href": "https://trug.pl/actors/trug.json"
+    },
+    {
+      "rel": "http://webfinger.net/rel/profile-page",
+      "type": "text/html",
+      "href": "https://trug.pl"
+    }
+  ]
+}
+```
+
+---
+
+# File structure - Actor
+
+```
+  /
+  │
+  ├── index.html
+  ├── archive.html
+  │
+  …
+  │
+  └── actors
+      └── trug.json
+```
+
+---
+
+# Actor
+
+```json
+# /actors/trug.json
+
+{
+  "@context": "https://www.w3.org/ns/activitystreams",
+  "id": "https://trug.pl/actors/trug.json",
+  "type": "Group",
+  "name": "Tricity Ruby User Group",
+  "preferredUsername": "trug",
+  "summary": "Ruby enthusiasts from Tricity (Gdańsk, Gdynia, Sopot).",
+  "url": "https://trug.pl",
+  "outbox": "https://trug.pl/outbox.json"
+}
+```
+
+---
+
+# Optional fields
+
+## 1. banner
+
+```json
+"banner": {
+  "type": "Image",
+  "url": "https://trug.pl/banners/trug-banner.jpg"
+}
+```
+
+---
+
+# Optional fields
+
+## 2. icon
+
+```json
+"icon": {
+  "type": "Image",
+  "url": "https://trug.pl/icons/trug-logo.png"
+}
+```
+
+---
+
+# Optional fields
+
+## 3. publicKey
+
+```json
+"publicKey": {
+  "id": "https://trug.pl/actors/trug#main-key",
+  "owner": "https://trug.pl/actors/trug",
+  "publicKeyPem": "-----BEGIN PUBLIC KEY-----\nMIIBIjAN...==\n-----END PUBLIC KEY-----"
+}
+```
+
+---
+
+# Optional fields
+
+## 4. location
+
+```json
+"location": {
+  "type": "Place",
+  "name": "Hackerspace Tricity, Poland",
+  "longitude": "54.3892594",
+  "latitude": "18.5818967",
+}
+```
+
+---
+
+# Optional fields
+
+## 5. tag
+
+```json
+"tag": [
+  {
+    "type": "Hashtag",
+    "name": "Ruby"
+  },
+  {
+    "type": "Hashtag",
+    "name": "Meetup"
+  }
+]
+```
+
+---
+
+# Optional fields
+
+## 6. attachment
+
+```json
+"attachment": [
+  {
+    "type": "Link",
+    "href": "https://www.facebook.com/TRUGmeetup",
+    "name": "Facebook"
+  }
+]
+```
+
+---
+
+# Inbox / Outbox
+
+- **Outbox**: Sends messages and activities (e.g., Create, Update).
+- Examples:
+  - **Create**: When an actor creates a new event.
+  - **Update**: When they update an event or a presentation.
+
+- **Inbox**: Receives messages and activities (e.g., Follow, Create).
+- Examples:
+  - **Follow**: When a user starts following someone.
+  - **Create**: When a user creates a new event that is sent to subscribers.
+
+---
+
+# Outbox (1/4)
+
+```
+  /
+  │
+  ├── index.html
+  ├── archive.html
+  │
+  …
+  │
+  └── outbox.json
+```
+
+---
+
+# Outbox (2/4)
+
+```json
+# /outbox.json
+
+{
+  "@context": "https://www.w3.org/ns/activitystreams",
+  "id": "https://trug.pl/outbox.json",
+  "type": "OrderedCollection",
+  "totalItems": 3,
+  "orderedItems": [{...}, {...}, ...]
+}
+```
+
+---
+
+# Outbox (3/4)
+
+```json
+# /outbox.json
+
+{
+  "@context": "https://www.w3.org/ns/activitystreams",
+  "id": "https://trug.pl/outbox.json",
+  "type": "OrderedCollection",
+  "first": "https://trug.pl/outbox/page-1.json"
+}
+```
+
+---
+
+# Outbox (4/4)
+
+```json
+# /outbox.json
+
+{
+  "@context": "https://www.w3.org/ns/activitystreams",
+  "id": "https://trug.pl/outbox.json",
+  "type": "OrderedCollection",
+  "first": {
+    "type": "OrderedCollectionPage",
+    "href": "https://trug.pl/outbox/2024-05.json"
+  }
+}
+```
+
+---
+
+# Outbox page (1/2)
+
+```json
+# /outbox/2024-05.json
+
+{
+  "@context": "https://www.w3.org/ns/activitystreams",
+  "id": "https://trug.pl/outbox/2024-05.json",
+  "type": "OrderedCollectionPage",
+  "partOf": "https://trug.pl/outbox",
+  "next": "https://trug.pl/outbox/2024-06.json",
+  "items": [
+    {
+      "type": "Create",
+      "object": "https://trug.pl/events/1.json"
+    },
+    {
+      "type": "Create",
+      "object": "https://trug.pl/events/2.json"
+    }
+  ]
+}
+```
+
+---
+
+# Outbox page (2/2)
+
+```json
+# /outbox/2024-05.json
+
+{
+  "@context": "https://www.w3.org/ns/activitystreams",
+  "id": "https://trug.pl/outbox/2024-05.json",
+  "type": "OrderedCollectionPage",
+  "partOf": "https://trug.pl/outbox",
+  "next": "https://trug.pl/outbox/2024-06.json",
+  "items": [
+    {
+      "type": "Create",
+      "object": { ... }
+    },
+    {
+      "type": "Create",
+      "object": { ... }
+    }
+  ]
+}
+```
+
+---
+
+# Event
+
+```
+  /
+  │
+  ├── index.html
+  ├── archive.html
+  │
+  …
+  │
+  └── events
+      └── {event-id}.json
+```
+
+---
+
+# Event
+
+```json
+# events/2024-05-meetup.json
+
+{
+  "@context": "https://www.w3.org/ns/activitystreams",
+  "id": "https://trug.pl/events/2024-05-meetup.json",
+  "type": "Event",
+  "name": "TRUG #123",
+  "startTime": "2024-05-15T18:00:00Z",
+  "endTime": "2024-05-15T20:00:00Z",
+  "location": {
+    "type": "Place",
+    "name": "Hackerspace Trójmiasto"
+  },
+  "talks": [{ ... }, { ... }],
+  "attributedTo": "https://trug.pl/actors/trug.json"
+}
+```
+
+---
+
+# Talk
+
+```
+  /
+  │
+  ├── index.html
+  ├── archive.html
+  │
+  …
+  │
+  └── talks
+      └── {talk-id}.json
+```
+
+---
+
+# Talk
+
+```json
+# talks/2025-05-meetup-integration.json
+
+{
+  "@context": "https://www.w3.org/ns/activitystreams",
+  "id": "https://trug.pl/talks/2025-05-meetup-integration.json",
+  "type": "Note", // "Presentation"
+  "name": "Integracja Ruby Meetupów z ActivityPub",
+  "content": "Jak można zintegrować grupy meetupowe Ruby z protokołem ActivityPub – prezentacja struktury plików, roli aktorów, oraz sposobu komunikacji między instancjami. Pokazujemy, jak grupy takie jak TRUG mogą publikować wydarzenia, tematy oraz materiały w sposób zdecentralizowany.",
+  "attributedTo": "https://wawer.it/actors/chris.json",
+  "inReplyTo": "https://trug.pl/events/2025-05-meetup.json",
+  "attachment": [
+    {
+      "type": "Link",
+      "href": "...",
+      "name": "Slajdy"
+    },
+    {
+      "type": "Link",
+      "href": "...",
+      "name": "Repozytorium"
+    }
+  ],
+  "published": "2025-05-22T18:00:00Z",
+  "url": "https://trug.pl/talks/activitypub-integration"
+}
+```
+
+---
+
+# Speaker
+
+```
+  /
+  │
+  ├── index.html
+  ├── archive.html
+  │
+  …
+  │
+  └── actors
+      └── {person-id}.json
+```
+
+---
+
+class: center, middle
+
+# New Website
+
+---
+
+# Static Page
+
+- https://github.com/wafcio/trug.wawer.it
+
+- https://trug.wawer.it
+
+## Proof of Concept - ActivityPub
+
+- https://github.com/wafcio/trug_ap/tree/activity_pub
+
+---
+
+# What next?
+
+Applications:
+
+- Ruby on Rails for meetups
+
+- For conferences
+
+- For conferences
+
+- meetups, conferences aggregator
+
+
+---
+
+class: center, middle
+
+# Questions ???
+
+    </textarea>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.5/d3.min.js"></script>
+    <script src="https://remarkjs.com/downloads/remark-latest.min.js">
+    </script>
+    <script>
+      var slideshow = remark.create();
+
+      const nodes = [
+        {id: "A", group: 1},
+        {id: "B", group: 1},
+        {id: "C", group: 1}
+      ];
+      const links = [
+        {source: "A", target: "B"},
+        {source: "B", target: "C"},
+        {source: "C", target: "A"}
+      ];
+
+      const nodes2 = [
+        {id: "A", group: 1},
+        {id: "B", group: 1},
+        {id: "C", group: 1},
+        {id: "D", group: 2},
+        {id: "E", group: 2},
+        {id: "F", group: 3}
+      ]
+      const links2 = [
+        {source: "A", target: "B"},
+        {source: "B", target: "C"},
+        {source: "C", target: "D"},
+        {source: "D", target: "E"},
+        {source: "E", target: "F"},
+        {source: "F", target: "A"},
+        {source: "B", target: "E"},
+        {source: "C", target: "A"}
+      ]
+
+      // Ustawienia SVG
+      const svgBasic = d3.select("#graph-basic");
+      const svg = d3.select("#graph");
+      const width = 700;
+      const height = 500;
+      svgBasic.attr("width", width)
+        .attr("height", height)
+        .attr("viewBox", `0 0 ${width} ${height}`);
+      svg.attr("width", width)
+        .attr("height", height)
+        .attr("viewBox", `0 0 ${width} ${height}`);
+
+      // Definicja strzałek
+      const defs = svgBasic.append("defs");
+      const defs2 = svg.append("defs");
+
+      defs.append("marker")
+          .attr("id", "arrow")
+          .attr("viewBox", "0 -5 10 10")
+          .attr("refX", 30)
+          .attr("refY", 0)
+          .attr("markerWidth", 6)
+          .attr("markerHeight", 6)
+          .attr("orient", "auto")
+          .append("path")
+          .attr("d", "M0,-5L10,0L0,5")
+          .attr("fill", "#999");
+
+      defs2.append("marker")
+            .attr("id", "arrow")
+            .attr("viewBox", "0 -5 10 10")
+            .attr("refX", 30)
+            .attr("refY", 0)
+            .attr("markerWidth", 6)
+            .attr("markerHeight", 6)
+            .attr("orient", "auto")
+            .append("path")
+            .attr("d", "M0,-5L10,0L0,5")
+            .attr("fill", "#999");
+
+      // Definicje kolorów i symboli dla każdej grupy
+      const groupStyles = [
+        { color: "#ff7f0e", imageUrl: "images/rug.png" }, // Grupa 1
+        { color: "#2ca02c", imageUrl: "images/conf.png" }, // Grupa 2
+        { color: "#d62728", imageUrl: "images/other.svg" }  // Grupa 3
+      ];
+
+      // Tworzenie symulacji
+      const simulation = d3.forceSimulation(nodes)
+          .force("link", d3.forceLink(links).id(d => d.id).distance(350))
+          .force("charge", d3.forceManyBody().strength(-1200))
+          .force("center", d3.forceCenter(width / 2, height / 2))
+          .force("x", d3.forceX(width / 2).strength(0.05))
+          .force("y", d3.forceY(height / 2).strength(0.05));
+
+      const simulation2 = d3.forceSimulation(nodes2)
+          .force("link", d3.forceLink(links2).id(d => d.id).distance(350))
+          .force("charge", d3.forceManyBody().strength(-1200))
+          .force("center", d3.forceCenter(width / 2, height / 2))
+          .force("x", d3.forceX(width / 2).strength(0.05))
+          .force("y", d3.forceY(height / 2).strength(0.05));
+
+      // Rysowanie linków
+      const link = svgBasic.append("g")
+          .selectAll("line")
+          .data(links)
+          .enter()
+          .append("line")
+          .attr("class", "link")
+          .attr("marker-end", "url(#arrow)");
+      const link2 = svg.append("g")
+          .selectAll("line")
+          .data(links2)
+          .enter()
+          .append("line")
+          .attr("class", "link")
+          .attr("marker-end", "url(#arrow)");
+
+      // Rysowanie węzłów
+      const node = svgBasic.append("g")
+          .selectAll(".node")
+          .data(nodes)
+          .enter()
+          .append("g")
+          .attr("class", "node")
+          .call(d3.drag()
+            .on("start", dragstarted)
+            .on("drag", dragged)
+            .on("end", dragended));
+      const node2 = svg.append("g")
+          .selectAll(".node")
+          .data(nodes2)
+          .enter()
+          .append("g")
+          .attr("class", "node")
+          .call(d3.drag()
+            .on("start", dragstarted)
+            .on("drag", dragged)
+            .on("end", dragended));
+
+      // Dodanie obrazków jako węzłów
+      node.append("image")
+          .attr("class", "node-image")
+          .attr("xlink:href", d => groupStyles[d.group - 1].imageUrl)
+          .attr("x", -50)
+          .attr("y", -50)
+          .attr("width", 100)
+          .attr("height", 100);
+      node2.append("image")
+           .attr("class", "node-image")
+           .attr("xlink:href", d => groupStyles[d.group - 1].imageUrl)
+           .attr("x", -50)
+           .attr("y", -50)
+           .attr("width", 100)
+           .attr("height", 100);
+
+      // Dodanie etykiet
+      node.append("text")
+          .attr("dy", 35)
+          .attr("text-anchor", "middle")
+          .text(d => d.id);
+      node2.append("text")
+           .attr("dy", 35)
+           .attr("text-anchor", "middle")
+           .text(d => d.id);
+
+      // Aktualizacja pozycji
+      simulation.on("tick", () => {
+        // Ograniczymy pozycje węzłów, aby nie wychodziły poza granice SVG
+        nodes.forEach(function(d) {
+          d.x = Math.max(100, Math.min(width - 100, d.x));
+          d.y = Math.max(100, Math.min(height - 100, d.y));
+        });
+
+        link
+            .attr("x1", d => d.source.x)
+            .attr("y1", d => d.source.y)
+            .attr("x2", d => d.target.x)
+            .attr("y2", d => d.target.y);
+
+        node.attr("transform", d => `translate(${d.x},${d.y})`);
+      });
+      simulation2.on("tick", () => {
+        // Ograniczymy pozycje węzłów, aby nie wychodziły poza granice SVG
+        nodes2.forEach(function(d) {
+          d.x = Math.max(100, Math.min(width - 100, d.x));
+          d.y = Math.max(100, Math.min(height - 100, d.y));
+        });
+
+        link2
+            .attr("x1", d => d.source.x)
+            .attr("y1", d => d.source.y)
+            .attr("x2", d => d.target.x)
+            .attr("y2", d => d.target.y);
+
+        node2.attr("transform", d => `translate(${d.x},${d.y})`);
+      });
+
+      // Funkcje obsługi przeciągania
+      function dragstarted(event, d) {
+        if (!event.active) simulation.alphaTarget(0.3).restart();
+        d.fx = d.x;
+        d.fy = d.y;
+      }
+
+      function dragged(event, d) {
+        d.fx = event.x;
+        d.fy = event.y;
+      }
+
+      function dragended(event, d) {
+        if (!event.active) simulation.alphaTarget(0);
+        d.fx = null;
+        d.fy = null;
+      }
+    </script>
+  </body>
+</html>
