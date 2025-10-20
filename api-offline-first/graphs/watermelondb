@@ -1,0 +1,26 @@
+  flowchart LR
+      subgraph Backend
+          Database[(Database)]
+          App[/Ruby on Rails/]
+          Database --> App
+          App --> Database
+      end
+
+      subgraph App_Client_02
+          AC1_Watermelon[/WatermelonDB/]
+          AC1_Local[(SQLite)]
+          AC1_Watermelon --> AC1_Local
+          AC1_Local --> AC1_Watermelon
+      end
+
+      subgraph App_Client_01
+          AC2_Watermelon[/WatermelonDB/]
+          AC2_Local[(SQLite)]
+          AC2_Watermelon --> AC2_Local
+          AC2_Local --> AC2_Watermelon
+      end
+
+      AC1_Watermelon -- "sync (push)" --> App
+      AC2_Watermelon -- "sync (push)" --> App
+      App -- "sync (pull)" --> AC1_Watermelon
+      App -- "sync (pull)" --> AC2_Watermelon

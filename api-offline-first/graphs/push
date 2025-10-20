@@ -1,0 +1,10 @@
+sequenceDiagram
+    participant Frontend
+    participant Backend
+    participant Database
+
+    Frontend->>Frontend: pushChanges(changes, lastPulledAt)
+    Frontend->>Backend: POST /push(last_pulled_at, changes)
+    Backend->>Database: record changes (if validated)
+    Database-->>Backend: return changed data
+    Backend-->>Frontend: sync complete

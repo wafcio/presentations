@@ -1,0 +1,13 @@
+sequenceDiagram
+    participant Frontend
+    participant Backend
+    participant Database
+
+    Frontend->>Frontend: synchronize()
+    Frontend->>Frontend: pullChanges(lastPulledAt)
+    Frontend->>Backend: GET /pull(last_pulled_at)
+    Backend->>Database: get changes & timestamp
+    Database-->>Backend: changes & timestamp
+    Backend-->>Frontend: changes & timestamp
+    Frontend->>Frontend: apply changes on localDB
+    Frontend->>Frontend: set lastPulledAt = timestamp

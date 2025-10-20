@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Offline-first in Practice: How Ruby on Rails Backend Supports a Mobile App</title>
+    <meta charset="utf-8">
+    <style>
+      @import url(https://fonts.googleapis.com/css?family=Poppins);
+      @import url(https://fonts.googleapis.com/css?family=Ubuntu+Mono:400,700,400italic);
+
+      body {
+        font-family: 'Poppins';
+      }
+      h1, h2, h3 {
+        font-family: 'Poppins';
+        font-weight: 400;
+        margin-bottom: 0;
+      }
+      .remark-slide-content h1 { font-size: 3em; }
+      .remark-slide-content h2 { font-size: 2em; }
+      .remark-slide-content h3 { font-size: 1.6em; }
+      .footnote {
+        position: absolute;
+        bottom: 3em;
+      }
+      li p { line-height: 1.25em; }
+      a, a > code {
+        color: #9aa146;
+        text-decoration: none;
+      }
+      code {
+        background: #e7e8e2;
+        border-radius: 5px;
+      }
+      .remark-code, .remark-inline-code { font-family: 'Ubuntu Mono'; }
+      .remark-code-line-highlighted     { background-color: #373832; }
+      .pull-left {
+        float: left;
+        width: 47%;
+      }
+      .pull-right {
+        float: right;
+        width: 47%;
+      }
+      .pull-right ~ p {
+        clear: both;
+      }
+      .avatar > img {
+        max-height: 250px;
+        border-radius: 25%;
+      }
+      #slideshow .slide .content code {
+        font-size: 0.8em;
+      }
+      #slideshow .slide .content pre code {
+        font-size: 0.9em;
+        padding: 15px;
+      }
+      .inverse {
+        background: #272822;
+        color: #777872;
+        text-shadow: 0 0 20px #333;
+      }
+      .inverse h1, .inverse h2 {
+        color: #f3f3f3;
+        line-height: 0.8em;
+      }
+
+      /* Slide-specific styling */
+      #slide-inverse .footnote {
+        bottom: 12px;
+        left: 20px;
+      }
+      #slide-how .slides {
+        font-size: 0.9em;
+        position: absolute;
+        top:  151px;
+        right: 140px;
+      }
+      #slide-how .slides h3 {
+        margin-top: 0.2em;
+      }
+      #slide-how .slides .first, #slide-how .slides .second {
+        padding: 1px 20px;
+        height: 90px;
+        width: 120px;
+        -moz-box-shadow: 0 0 10px #777;
+        -webkit-box-shadow: 0 0 10px #777;
+        box-shadow: 0 0 10px #777;
+      }
+      #slide-how .slides .first {
+        background: #fff;
+        position: absolute;
+        top: 20%;
+        left: 20%;
+        z-index: 1;
+      }
+      #slide-how .slides .second {
+        position: relative;
+        background: #fff;
+        z-index: 0;
+      }
+
+      /* Two-column layout */
+      .left-column {
+        color: #777;
+        width: 20%;
+        height: 92%;
+        float: left;
+      }
+      .left-column h2:last-of-type, .left-column h3:last-child {
+        color: #000;
+      }
+      .right-column {
+        width: 75%;
+        float: right;
+        padding-top: 1em;
+      }
+
+      img[src*="#hero"] {
+        height: 400px;
+      }
+
+      img[src*="#slide-image"] {
+        height: 400px;
+      }
+
+      img[src*="#screen"] {
+        width: 80%;
+      }
+
+      pre.mermaid {
+        width: 600px;
+        min-height: 300px;
+      }
+
+      .w-300, .w-300 img {
+        width: 300px;
+      }
+
+    </style>
+  </head>
+  <body>
+    <textarea id="source">
+
+class: center, middle
+
+# Offline-first in Practice
+## How Ruby on Rails Backend Supports a Mobile App
+
+---
+
+# Who am I?
+
+.pull-left.avatar[![Picture of me](https://avatars.githubusercontent.com/u/945115?v=4)]
+
+- Chris Wawer
+
+- Ruby on Rails Developer
+
+- https://wawer.it
+
+.w-300[![Monterail](images/monterail-logo.png)]
+
+---
+
+# Equinet by Monterail
+
+- Manages schedules, invoices, inventories, and photos
+
+- Mobile app for farriers (hoof care specialists), offline-first, written in JavaScript using React Native
+
+- Web application written in React.js
+
+- Uses WatermelonDB for local database syncing
+
+- Backend is Ruby on Rails API handling data sync and storage
+
+More details at Monterail project page:
+[https://www.monterail.com/projects/equinet](https://www.monterail.com/projects/equinet)
+
+---
+
+# What is Offline-first?
+
+- Approach where the app works fully without a network connection
+
+- Data is stored and managed locally on the device
+
+- Changes sync automatically when connection is restored
+
+- Improves reliability and user experience in unstable networks
+
+---
+
+# WatermelonDB Overview
+
+<center>
+  <img src="images/watermelon-logo.jpeg" width="100px" />
+</center>
+
+- High-performance reactive database for React and React Native
+
+- Built on SQLite for speed and reliability
+
+- Designed for large-scale, complex data in mobile apps (not really)
+
+- Supports optimized syncing strategies for offline-first apps
+
+More details:
+- [https://github.com/Nozbe/WatermelonDB](https://github.com/Nozbe/WatermelonDB)
+
+- [https://watermelondb.dev/docs](https://watermelondb.dev/docs)
+
+---
+
+# WatermelonDB Overview
+
+<center>
+  <img src="images/watermelondb.png" width="100%" />
+</center>
+
+---
+
+# Ruby on Rails Backend
+
+- Acts as the central data store and synchronization authority
+
+- Exposes API endpoints for syncing created, updated, and deleted data
+
+- Handles conflict resolution and data validation
+
+- Uses standard REST API for communication
+
+---
+
+# Sync - pull
+
+<center>
+  <img src="images/pull.png" width="100%" />
+</center>
+
+---
+
+# Sync - push
+
+<center>
+  <img src="images/push.png" width="100%" />
+</center>
+
+---
+
+# Sync - data structure
+
+```json
+{
+  projects: {
+    created: [
+      { id: 'aaaa', name: 'Foo', is_favorite: true },
+      { id: 'bbbb', name: 'Bar', is_favorite: false }
+    ],
+    updated: [
+      { id: 'ccc', name: 'Baz', is_favorite: true }
+    ],
+    deleted: ['ddd']
+  },
+  tasks: {
+    created: [],
+    updated: [
+      { id: 'tttt', project_id: 'aaaa', name: 'Buy eggs' }
+    ],
+    deleted: []
+  }
+}
+```
+
+---
+
+# Demo: Ruby on Rails
+
+- Simple controller handling sync requests
+
+- Accepts created, updated, deleted data from clients
+
+- Responds with changes since last sync
+
+- Enables two-way data synchronization
+
+- Handles conflict resolution and validation
+
+Source:
+[https://github.com/wafcio-trug-sources/rails-offline-sync](https://github.com/wafcio-trug-sources/rails-offline-sync)
+
+---
+
+# Summary
+
+- WatermelonDB provides fast (in theory), offline-capable local data storage
+
+- Ruby on Rails backend supports centralized syncing and conflict management
+
+- Together they enable robust offline-first mobile applications
+
+    </textarea>
+    <script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@11.12.0/dist/mermaid.min.js"></script>
+    <script>
+      mermaid.initialize();
+
+      var slideshow = remark.create({ startOnLoad: true });
+      slideshow.on('showSlide', () => {
+        // mermaid.init({}, document.querySelectorAll('pre.mermaid'));
+
+        setTimeout(() => {
+          mermaid.init({}, document.querySelectorAll('pre.mermaid'));
+        }, 100);
+      });
+    </script>
+  </body>
+</html>
